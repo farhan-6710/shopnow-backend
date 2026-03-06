@@ -219,3 +219,4 @@ const googleAuthCallback = async (req: Request, res: Response) => {
 };
 
 export { signup, login, logout, getMe, googleAuthInit, googleAuthCallback };
+
