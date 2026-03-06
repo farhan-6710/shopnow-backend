@@ -35,7 +35,7 @@ app.use('/feedback', feedbackRoutes);
 app.use(errorHandler);
 
 // Health check
-app.get('/api/health', (req, res) => {
+app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 

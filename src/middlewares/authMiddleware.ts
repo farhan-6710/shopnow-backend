@@ -17,7 +17,19 @@ export const protect = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const token = req.cookies[AUTH_COOKIE_NAME];
+    let token: string | undefined;
+
+    // 1. Check Authorization header for Bearer token
+    if (
+      req.headers.authorization &&
+      req.headers.authorization.startsWith('Bearer')
+    ) {
+      token = req.headers.authorization.split(' ')[1];
+    }
+    // 2. Fallback to HttpOnly cookie
+    else if (req.cookies?.[AUTH_COOKIE_NAME]) {
+      token = req.cookies[AUTH_COOKIE_NAME];
+    }
 
     if (!token) {
       res.status(401).json({ success: false, error: 'Unauthorized' });
