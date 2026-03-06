@@ -50,6 +50,7 @@ const signup = async (req: Request, res: Response) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        picture: user.picture,
       },
       token,
     });
@@ -103,6 +104,7 @@ const login = async (req: Request, res: Response) => {
         id: user.id,
         name: user.name,
         email: user.email,
+        picture: user.picture,
       },
       token,
     });
@@ -146,6 +148,7 @@ const getMe = async (req: any, res: Response) => {
       id: user.id,
       name: user.name,
       email: user.email,
+      picture: user.picture,
     },
   });
 };
@@ -162,7 +165,6 @@ const googleAuthInit = async (req: Request, res: Response) => {
     scope: ['profile', 'email'],
     prompt: 'consent',
   });
-  console.log('DEBUG_OAUTH_URL', url);
   res.redirect(url);
 };
 
@@ -182,6 +184,7 @@ const googleAuthCallback = async (req: Request, res: Response) => {
     });
 
     const payload = ticket.getPayload();
+    console.log('DEBUG_OAUTH_PAYLOAD', payload);
     if (!payload || !payload.email) {
       return res
         .status(400)
@@ -190,6 +193,7 @@ const googleAuthCallback = async (req: Request, res: Response) => {
 
     const email = payload.email.toLowerCase();
     const name = payload.name || 'Google User';
+    const picture = payload.picture || '';
 
     let user = await prisma.user.findUnique({ where: { email } });
 
@@ -203,6 +207,7 @@ const googleAuthCallback = async (req: Request, res: Response) => {
           name,
           email,
           password: hashedPassword,
+          picture,
         },
       });
     }
@@ -219,4 +224,3 @@ const googleAuthCallback = async (req: Request, res: Response) => {
 };
 
 export { signup, login, logout, getMe, googleAuthInit, googleAuthCallback };
-

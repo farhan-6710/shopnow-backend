@@ -8,6 +8,7 @@ export interface AuthRequest extends Request {
     id: string;
     email: string;
     name: string;
+    picture?: string | null;
   };
 }
 
@@ -45,7 +46,7 @@ export const protect = async (
 
     const user = await prisma.user.findUnique({
       where: { id: decoded.id },
-      select: { id: true, email: true, name: true },
+      select: { id: true, email: true, name: true, picture: true },
     });
 
     if (!user) {
