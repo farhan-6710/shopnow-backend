@@ -184,7 +184,6 @@ const googleAuthCallback = async (req: Request, res: Response) => {
     });
 
     const payload = ticket.getPayload();
-    console.log('DEBUG_OAUTH_PAYLOAD', payload);
     if (!payload || !payload.email) {
       return res
         .status(400)
